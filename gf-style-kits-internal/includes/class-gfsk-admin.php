@@ -12,7 +12,13 @@ class GFSK_Admin {
 	public const OPTION_KEY = 'gfsk_settings';
 
 	public function register(): void {
-		add_action( 'admin_menu', array( $this, 'register_menu' ) );
+		/*
+		 * Bugfix: registrar en prioridad 20 para asegurar que GF ya creó su menú
+		 * (parent slug `gf_edit_forms`). Si se registra demasiado pronto,
+		 * WordPress puede resolver enlaces incorrectos tipo /wp-admin/gf-style-kits
+		 * en lugar de /wp-admin/admin.php?page=gf-style-kits.
+		 */
+		add_action( 'admin_menu', array( $this, 'register_menu' ), 20 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'admin_post_gfsk_save_settings', array( $this, 'handle_save' ) );
 		add_action( 'admin_post_gfsk_export_preset', array( $this, 'handle_export' ) );
@@ -20,7 +26,16 @@ class GFSK_Admin {
 	}
 
 	public function register_menu(): void {
-		$parent_slug = class_exists( 'GFForms' ) ? 'gf_edit_forms' : 'options-general.php';
+		/*
+		 * `menu_slug` debe ser un slug simple (NO URL).
+		 * Esto fuerza el destino correcto: /wp-admin/admin.php?page=gf-style-kits.
+		 */
+		$parent_slug = 'gf_edit_forms';
+
+		if ( ! class_exists( 'GFForms' ) ) {
+			return;
+		}
+
 		add_submenu_page(
 			$parent_slug,
 			__( 'GF Style Kits', 'gf-style-kits-internal' ),
