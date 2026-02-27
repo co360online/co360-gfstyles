@@ -1,0 +1,150 @@
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] {
+  --gfsk-primary: #2f6cdb;
+  --gfsk-secondary: #1d4ea1;
+  --gfsk-card-bg: #f8fafc;
+  --gfsk-radius: 8px;
+  --gfsk-padding: 16px;
+  --gfsk-font-size: 15px;
+  font-size: var(--gfsk-font-size);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_footer input[type="submit"],
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_page_footer input[type="button"],
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_page_footer button {
+  background: var(--gfsk-primary);
+  color: #fff;
+  border: 1px solid var(--gfsk-primary);
+  border-radius: var(--gfsk-radius);
+  padding: calc(var(--gfsk-padding) * 0.5) var(--gfsk-padding);
+  transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_footer input[type="submit"]:hover,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_page_footer input[type="button"]:hover,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_page_footer button:hover {
+  background: var(--gfsk-secondary);
+  border-color: var(--gfsk-secondary);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_footer input[type="submit"]:focus-visible,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_page_footer input[type="button"]:focus-visible,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_page_footer button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gfsk-primary) 35%, transparent);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_footer input[type="submit"][disabled],
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_page_footer input[type="button"][disabled] {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gsection {
+  background: var(--gfsk-card-bg);
+  border-radius: var(--gfsk-radius);
+  padding: var(--gfsk-padding);
+  margin-top: calc(var(--gfsk-padding) * 1.2);
+  margin-bottom: calc(var(--gfsk-padding) * 0.8);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gsection .gsection_title {
+  margin: 0;
+  color: var(--gfsk-primary);
+}
+
+.gform_wrapper.gravity-theme.gfsk-section-title-light .gsection .gsection_title {
+  color: #fff;
+  background: var(--gfsk-primary);
+  border-radius: calc(var(--gfsk-radius) - 2px);
+  padding: 8px 12px;
+}
+
+.gform_wrapper.gravity-theme.gfsk-show-section-line .gsection::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 10px;
+  background: color-mix(in srgb, var(--gfsk-primary) 45%, #ffffff);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="checkbox"],
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--gfsk-primary);
+  background: #fff;
+  margin-right: 8px;
+  transform: translateY(2px);
+  cursor: pointer;
+  position: relative;
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="checkbox"] {
+  border-radius: 4px;
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="radio"] {
+  border-radius: 50%;
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="checkbox"]::after,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="radio"]::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: 3px;
+  border-radius: inherit;
+  background: var(--gfsk-secondary);
+  transform: scale(0);
+  transition: transform .12s ease-in-out;
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="checkbox"]:checked::after,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="radio"]:checked::after {
+  transform: scale(1);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="checkbox"]:focus-visible,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] input[type="radio"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gfsk-primary) 25%, transparent);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gfield_error input,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gfield_error select,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gfield_error textarea {
+  border-color: #c62828 !important;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, .12);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .validation_message,
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gform_validation_errors {
+  color: #8c1d18;
+  border-color: rgba(140, 29, 24, 0.25);
+}
+
+.gform_wrapper.gravity-theme[class*="gfsk-preset-"] .gfield_description {
+  font-size: calc(var(--gfsk-font-size) - 2px);
+  color: #667085;
+}
+
+.gform_wrapper.gravity-theme.gfsk-preset-factura .bloque-resumen-pago {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: var(--gfsk-card-bg);
+  border: 1px solid color-mix(in srgb, var(--gfsk-primary) 25%, #ffffff);
+  border-radius: var(--gfsk-radius);
+  padding: var(--gfsk-padding);
+}
+
+.gform_wrapper.gravity-theme.gfsk-preset-factura [id$="_33"] {
+  grid-column: 1 / -1;
+  padding: 10px;
+  border-radius: calc(var(--gfsk-radius) - 2px);
+  background: color-mix(in srgb, var(--gfsk-primary) 12%, #ffffff);
+  font-weight: 700;
+}
