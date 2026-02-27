@@ -76,9 +76,11 @@ class GFSK_Wrappers {
 			if ( empty( $wrapper['enabled'] ) ) {
 				continue;
 			}
-			$start = absint( $wrapper['start_field_id'] ?? 0 );
-			$end   = absint( $wrapper['end_field_id'] ?? 0 );
-			$class = sanitize_html_class( (string) ( $wrapper['class'] ?? '' ) );
+			$start = absint( $wrapper['start'] ?? $wrapper['start_field_id'] ?? 0 );
+			$end   = absint( $wrapper['end'] ?? $wrapper['end_field_id'] ?? 0 );
+			$class_parts = preg_split( '/\s+/', (string) ( $wrapper['class'] ?? '' ) ) ?: array();
+			$class_parts = array_filter( array_map( 'sanitize_html_class', $class_parts ) );
+			$class       = implode( ' ', $class_parts );
 
 			if ( $start <= 0 || $end <= 0 || '' === $class ) {
 				continue;
@@ -91,8 +93,8 @@ class GFSK_Wrappers {
 			}
 
 			$valid[] = array(
-				'start_field_id'        => $start,
-				'end_field_id'          => $end,
+				'start'                 => $start,
+				'end'                   => $end,
 				'class'                 => $class,
 				'force_close_in_footer' => ! empty( $wrapper['force_close_in_footer'] ),
 			);
@@ -114,14 +116,14 @@ class GFSK_Wrappers {
 		$close_markup = '';
 
 		foreach ( $this->states[ $form_id ]['wrappers'] as $index => $wrapper ) {
-			if ( $field_id === (int) $wrapper['start_field_id'] ) {
+			if ( $field_id === (int) $wrapper['start'] ) {
 				$open_markup .= '<div class="' . esc_attr( $wrapper['class'] ) . '">';
 				$this->states[ $form_id ]['open_wrappers'][ $index ] = $wrapper;
 			}
 		}
 
 		foreach ( $this->states[ $form_id ]['open_wrappers'] as $index => $wrapper ) {
-			if ( $field_id === (int) $wrapper['end_field_id'] ) {
+			if ( $field_id === (int) $wrapper['end'] ) {
 				$close_markup .= '</div>';
 				unset( $this->states[ $form_id ]['open_wrappers'][ $index ] );
 			}

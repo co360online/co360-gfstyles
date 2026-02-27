@@ -1,8 +1,29 @@
 (function ($) {
   'use strict';
 
-  function initColorPickers() {
-    $('.gfsk-color').wpColorPicker();
+  function initColorPickers(context) {
+    $(context || document).find('.gfsk-color').wpColorPicker();
+  }
+
+  function togglePanels(ids) {
+    const selected = ids || [];
+    const $panels = $('.gfsk-panel');
+    const $empty = $('#gfsk-empty-state');
+
+    $panels.hide();
+
+    if (!selected.length) {
+      $empty.show();
+      return;
+    }
+
+    $empty.hide();
+
+    selected.forEach((id) => {
+      $panels.filter('[data-form-id="' + id + '"]').show();
+    });
+
+    initColorPickers('#gfsk-form-panels');
   }
 
   function initFormFilter() {
@@ -13,22 +34,14 @@
 
     $filter.on('change', function () {
       const selected = $(this).val() || [];
-      $('.gfsk-row, .gfsk-panel').hide();
+      togglePanels(selected);
+    });
 
-      if (!selected.length) {
-        $('.gfsk-row, .gfsk-panel').show();
-        return;
-      }
-
-      selected.forEach((id) => {
-        $('.gfsk-row[data-form-id="' + id + '"]').show();
-        $('.gfsk-panel[data-form-id="' + id + '"]').show();
-      });
-    }).trigger('change');
+    togglePanels([]);
   }
 
   $(function () {
-    initColorPickers();
+    initColorPickers(document);
     initFormFilter();
   });
 })(jQuery);
