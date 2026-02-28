@@ -11,6 +11,8 @@ class GFSK_Admin {
 
 	public const OPTION_KEY = 'gfsk_settings';
 
+	public const DEBUG = false;
+
 	public function register(): void {
 		/*
 		 * Register after GF menu is available; keeps submenu under Forms and avoids bad URLs.
@@ -185,6 +187,41 @@ class GFSK_Admin {
 					<input type="number" min="10" max="22" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][font_size]" value="<?php echo esc_attr( (string) $vars['font_size'] ); ?>" /> px
 				</td>
 			</tr>
+
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Choices spacing', 'gf-style-kits-internal' ); ?></th>
+				<td>
+					<label>row gap <input type="number" min="0" max="40" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][choice_row_gap]" value="<?php echo esc_attr( (string) $vars['choice_row_gap'] ); ?>" /></label> px
+					<label style="margin-left:14px;">choice gap <input type="number" min="0" max="40" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][choice_gap]" value="<?php echo esc_attr( (string) $vars['choice_gap'] ); ?>" /></label> px
+					<label style="margin-left:14px;">size <input type="number" min="12" max="40" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][choice_size]" value="<?php echo esc_attr( (string) $vars['choice_size'] ); ?>" /></label> px
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Títulos de campo', 'gf-style-kits-internal' ); ?></th>
+				<td>
+					<label>size <input type="number" min="12" max="36" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][label_font_size]" value="<?php echo esc_attr( (string) $vars['label_font_size'] ); ?>" /></label> px
+					<label style="margin-left:14px;">weight
+						<select name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][label_font_weight]">
+							<?php foreach ( array( 400, 500, 600, 700, 800, 900 ) as $w ) : ?>
+								<option value="<?php echo esc_attr( (string) $w ); ?>" <?php selected( (int) $vars['label_font_weight'], (int) $w ); ?>><?php echo esc_html( (string) $w ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Botón submit', 'gf-style-kits-internal' ); ?></th>
+				<td>
+					<label>font <input type="number" min="10" max="28" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][button_font_size]" value="<?php echo esc_attr( (string) $vars['button_font_size'] ); ?>" /></label> px
+					<label style="margin-left:10px;">py <input type="number" min="0" max="40" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][button_padding_y]" value="<?php echo esc_attr( (string) $vars['button_padding_y'] ); ?>" /></label> px
+					<label style="margin-left:10px;">px <input type="number" min="0" max="50" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][button_padding_x]" value="<?php echo esc_attr( (string) $vars['button_padding_x'] ); ?>" /></label> px
+					<label style="margin-left:10px;">radius <input type="number" min="0" max="40" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][button_radius]" value="<?php echo esc_attr( (string) $vars['button_radius'] ); ?>" /></label> px
+					<br/><br/>
+					<input class="gfsk-color" type="text" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][button_bg]" value="<?php echo esc_attr( (string) $vars['button_bg'] ); ?>" />
+					<input class="gfsk-color" type="text" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][button_text]" value="<?php echo esc_attr( (string) $vars['button_text'] ); ?>" />
+					<input class="gfsk-color" type="text" name="gfsk_settings[forms][<?php echo esc_attr( (string) $form_id ); ?>][vars][button_bg_hover]" value="<?php echo esc_attr( (string) $vars['button_bg_hover'] ); ?>" />
+				</td>
+			</tr>
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Secciones', 'gf-style-kits-internal' ); ?></th>
 				<td>
@@ -218,10 +255,12 @@ class GFSK_Admin {
 			</tr>
 			</tbody>
 		</table>
+		<?php if ( self::DEBUG ) : ?>
 		<details>
 			<summary><?php esc_html_e( 'Debug', 'gf-style-kits-internal' ); ?></summary>
 			<pre><?php echo esc_html( wp_json_encode( array( 'enabled' => $row['enabled'], 'preset' => $row['preset'], 'vars' => $vars ), JSON_PRETTY_PRINT ) ); ?></pre>
 		</details>
+		<?php endif; ?>
 		<?php
 	}
 
@@ -320,13 +359,32 @@ class GFSK_Admin {
 	}
 
 	public static function sanitize_vars( array $vars ): array {
+		$primary       = self::normalize_hex_color( (string) ( $vars['primary'] ?? '' ) );
+		$secondary     = self::normalize_hex_color( (string) ( $vars['secondary'] ?? '' ) );
+		$button_bg     = self::normalize_hex_color( (string) ( $vars['button_bg'] ?? '' ) );
+		$button_text   = self::normalize_hex_color( (string) ( $vars['button_text'] ?? '' ) );
+		$button_hover  = self::normalize_hex_color( (string) ( $vars['button_bg_hover'] ?? '' ) );
+
 		return array(
-			'primary'             => self::normalize_hex_color( (string) ( $vars['primary'] ?? '' ) ),
-			'secondary'           => self::normalize_hex_color( (string) ( $vars['secondary'] ?? '' ) ),
+			'primary'             => $primary,
+			'secondary'           => $secondary,
 			'card_bg'             => self::normalize_hex_color( (string) ( $vars['card_bg'] ?? '' ) ),
 			'radius'              => self::sanitize_int( $vars['radius'] ?? 10, 0, 50 ),
 			'padding'             => self::sanitize_int( $vars['padding'] ?? 16, 0, 60 ),
 			'font_size'           => self::sanitize_int( $vars['font_size'] ?? 15, 10, 22 ),
+			'choice_row_gap'      => self::sanitize_int( $vars['choice_row_gap'] ?? 6, 0, 40 ),
+			'choice_gap'          => self::sanitize_int( $vars['choice_gap'] ?? 10, 0, 40 ),
+			'choice_size'         => self::sanitize_int( $vars['choice_size'] ?? 22, 12, 40 ),
+			'label_font_size'     => self::sanitize_int( $vars['label_font_size'] ?? 18, 12, 36 ),
+			'label_font_weight'   => self::sanitize_int( $vars['label_font_weight'] ?? 700, 400, 900 ),
+			'button_font_size'    => self::sanitize_int( $vars['button_font_size'] ?? 16, 10, 28 ),
+			'button_padding_y'    => self::sanitize_int( $vars['button_padding_y'] ?? 14, 0, 40 ),
+			'button_padding_x'    => self::sanitize_int( $vars['button_padding_x'] ?? 22, 0, 50 ),
+			'button_radius'       => self::sanitize_int( $vars['button_radius'] ?? 14, 0, 40 ),
+			'button_bg'           => '' !== $button_bg ? $button_bg : $primary,
+			'button_text'         => '' !== $button_text ? $button_text : '#ffffff',
+			'button_bg_hover'     => '' !== $button_hover ? $button_hover : $secondary,
+
 			'section_title_light' => ! empty( $vars['section_title_light'] ),
 			'section_line'        => ! empty( $vars['section_line'] ),
 		);

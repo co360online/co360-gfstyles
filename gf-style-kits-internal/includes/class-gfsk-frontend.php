@@ -32,13 +32,14 @@ class GFSK_Frontend {
 
 		$vars = (array) $config['vars'];
 		wp_enqueue_style( 'gfsk-base', GFSK_PLUGIN_URL . 'assets/css/base.css', array(), GFSK_VERSION );
+		wp_enqueue_style( 'gfsk-controls', GFSK_PLUGIN_URL . 'assets/css/controls.css', array( 'gfsk-base' ), GFSK_VERSION );
 
 		$inline_css = $this->build_css_variables( $form_id, $vars );
 		$advanced   = (string) $config['advanced_css'];
 		if ( '' !== $advanced ) {
 			$inline_css .= "\n" . $this->scope_css( $advanced, '#gform_wrapper_' . $form_id );
 		}
-		wp_add_inline_style( 'gfsk-base', $inline_css );
+		wp_add_inline_style( 'gfsk-controls', $inline_css );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_log( 'GFSK enqueue form ' . $form_id . ' preset=' . (string) $config['preset'] . ' vars=' . wp_json_encode( $vars ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -54,6 +55,18 @@ class GFSK_Frontend {
 		$css  .= '--gfsk-radius:' . absint( $vars['radius'] ) . 'px;';
 		$css  .= '--gfsk-padding:' . absint( $vars['padding'] ) . 'px;';
 		$css  .= '--gfsk-font-size:' . absint( $vars['font_size'] ) . 'px;';
+		$css  .= '--gfsk-choice-row-gap:' . absint( $vars['choice_row_gap'] ) . 'px;';
+		$css  .= '--gfsk-choice-gap:' . absint( $vars['choice_gap'] ) . 'px;';
+		$css  .= '--gfsk-choice-size:' . absint( $vars['choice_size'] ) . 'px;';
+		$css  .= '--gfsk-label-size:' . absint( $vars['label_font_size'] ) . 'px;';
+		$css  .= '--gfsk-label-weight:' . absint( $vars['label_font_weight'] ) . ';';
+		$css  .= '--gfsk-btn-size:' . absint( $vars['button_font_size'] ) . 'px;';
+		$css  .= '--gfsk-btn-py:' . absint( $vars['button_padding_y'] ) . 'px;';
+		$css  .= '--gfsk-btn-px:' . absint( $vars['button_padding_x'] ) . 'px;';
+		$css  .= '--gfsk-btn-radius:' . absint( $vars['button_radius'] ) . 'px;';
+		$css  .= '--gfsk-btn-bg:' . esc_attr( (string) $vars['button_bg'] ) . ';';
+		$css  .= '--gfsk-btn-text:' . esc_attr( (string) $vars['button_text'] ) . ';';
+		$css  .= '--gfsk-btn-bg-hover:' . esc_attr( (string) $vars['button_bg_hover'] ) . ';';
 		$css  .= '}';
 		return $css;
 	}
@@ -76,7 +89,19 @@ class GFSK_Frontend {
 			$class .= ' gfsk-show-section-line';
 		}
 
-		return $this->append_classes_to_html_tag( $form_tag, $class );
+		$updated = $this->append_classes_to_html_tag( $form_tag, $class );
+
+		if ( defined( 'GFSK_DEBUG' ) && GFSK_DEBUG ) {
+			$updated = $this->append_data_attrs_to_html_tag(
+				$updated,
+				array(
+					'data-gfsk-form-id' => (string) $form_id,
+					'data-gfsk-preset'  => (string) $config['preset'],
+				)
+			);
+		}
+
+		return $updated;
 	}
 
 	public function inject_wrapper_classes( string $form_markup, array $form ): string {
@@ -145,6 +170,26 @@ class GFSK_Frontend {
 		}
 
 		return preg_replace( '/>$/', ' class="' . esc_attr( $value ) . '">', $tag, 1 ) ?: $tag;
+	}
+
+
+	/**
+	 * Add or replace arbitrary data-* attributes in opening HTML tag.
+	 */
+	private function append_data_attrs_to_html_tag( string $tag, array $attrs ): string {
+		foreach ( $attrs as $attr => $value ) {
+			$attr  = sanitize_key( (string) $attr );
+			$value = esc_attr( (string) $value );
+			if ( '' === $attr ) {
+				continue;
+			}
+			if ( preg_match( '/\b' . preg_quote( $attr, '/' ) . '=("|\')([^"\']*)\1/i', $tag ) ) {
+				$tag = preg_replace( '/\b' . preg_quote( $attr, '/' ) . '=("|\')([^"\']*)\1/i', $attr . '="' . $value . '"', $tag, 1 ) ?: $tag;
+			} else {
+				$tag = preg_replace( '/>$/', ' ' . $attr . '="' . $value . '">', $tag, 1 ) ?: $tag;
+			}
+		}
+		return $tag;
 	}
 
 	private function scope_css( string $css, string $scope ): string {

@@ -1,8 +1,4 @@
-/*
- * GF Style Kits base styles.
- * Compatible with Gravity Theme and legacy/mixed markup.
- * Scope is always limited to forms carrying .gfsk-form.
- */
+/* Base presets/cards/layout styling for GF Style Kits */
 
 .gform_wrapper.gravity-theme .gfsk-form,
 .gform_wrapper .gfsk-form {
@@ -10,81 +6,6 @@
   line-height: 1.45;
 }
 
-.gform_wrapper.gravity-theme .gfsk-form label,
-.gform_wrapper.gravity-theme .gfsk-form legend,
-.gform_wrapper .gfsk-form label,
-.gform_wrapper .gfsk-form legend {
-  font-size: inherit;
-}
-
-/* Inputs sizing + radius variables */
-.gform_wrapper.gravity-theme .gfsk-form input[type="text"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="email"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="tel"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="number"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="password"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="url"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="search"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="date"],
-.gform_wrapper.gravity-theme .gfsk-form select,
-.gform_wrapper.gravity-theme .gfsk-form textarea,
-.gform_wrapper .gfsk-form input[type="text"],
-.gform_wrapper .gfsk-form input[type="email"],
-.gform_wrapper .gfsk-form input[type="tel"],
-.gform_wrapper .gfsk-form input[type="number"],
-.gform_wrapper .gfsk-form input[type="password"],
-.gform_wrapper .gfsk-form input[type="url"],
-.gform_wrapper .gfsk-form input[type="search"],
-.gform_wrapper .gfsk-form input[type="date"],
-.gform_wrapper .gfsk-form select,
-.gform_wrapper .gfsk-form textarea {
-  border-radius: var(--gfsk-radius, 10px);
-  padding: calc(var(--gfsk-padding, 16px) * 0.6) calc(var(--gfsk-padding, 16px) * 0.8);
-}
-
-/* Buttons */
-.gform_wrapper.gravity-theme .gfsk-form .gform_footer input[type="submit"],
-.gform_wrapper.gravity-theme .gfsk-form .gform_page_footer input[type="button"],
-.gform_wrapper.gravity-theme .gfsk-form .gform_page_footer button,
-.gform_wrapper .gfsk-form .gform_footer input[type="submit"],
-.gform_wrapper .gfsk-form .gform_page_footer input[type="button"],
-.gform_wrapper .gfsk-form .gform_page_footer button {
-  background: var(--gfsk-primary, #2f6cdb);
-  color: #fff;
-  border: 1px solid var(--gfsk-primary, #2f6cdb);
-  border-radius: var(--gfsk-radius, 10px);
-  padding: calc(var(--gfsk-padding, 16px) * 0.6) var(--gfsk-padding, 16px);
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.gform_wrapper.gravity-theme .gfsk-form .gform_footer input[type="submit"]:hover,
-.gform_wrapper.gravity-theme .gfsk-form .gform_page_footer input[type="button"]:hover,
-.gform_wrapper.gravity-theme .gfsk-form .gform_page_footer button:hover,
-.gform_wrapper .gfsk-form .gform_footer input[type="submit"]:hover,
-.gform_wrapper .gfsk-form .gform_page_footer input[type="button"]:hover,
-.gform_wrapper .gfsk-form .gform_page_footer button:hover {
-  background: var(--gfsk-secondary, #1d4ea1);
-  border-color: var(--gfsk-secondary, #1d4ea1);
-}
-
-.gform_wrapper.gravity-theme .gfsk-form .gform_footer input[type="submit"]:focus-visible,
-.gform_wrapper.gravity-theme .gfsk-form .gform_page_footer input[type="button"]:focus-visible,
-.gform_wrapper.gravity-theme .gfsk-form .gform_page_footer button:focus-visible,
-.gform_wrapper.gravity-theme .gfsk-form input:focus-visible,
-.gform_wrapper.gravity-theme .gfsk-form select:focus-visible,
-.gform_wrapper.gravity-theme .gfsk-form textarea:focus-visible,
-.gform_wrapper .gfsk-form .gform_footer input[type="submit"]:focus-visible,
-.gform_wrapper .gfsk-form .gform_page_footer input[type="button"]:focus-visible,
-.gform_wrapper .gfsk-form .gform_page_footer button:focus-visible,
-.gform_wrapper .gfsk-form input:focus-visible,
-.gform_wrapper .gfsk-form select:focus-visible,
-.gform_wrapper .gfsk-form textarea:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 55%, transparent);
-  outline-offset: 1px;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 25%, transparent);
-}
-
-/* Sections */
 .gform_wrapper.gravity-theme .gfsk-form .gsection,
 .gform_wrapper .gfsk-form .gsection {
   background: var(--gfsk-card-bg, #f8fafc);
@@ -114,41 +35,6 @@
   height: 2px;
   margin-top: 10px;
   background: color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 45%, #fff);
-}
-
-/* Keep native checkbox/radio accessible */
-.gform_wrapper.gravity-theme .gfsk-form input[type="checkbox"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="radio"],
-.gform_wrapper .gfsk-form input[type="checkbox"],
-.gform_wrapper .gfsk-form input[type="radio"] {
-  accent-color: var(--gfsk-primary, #2f6cdb);
-  inline-size: 18px;
-  block-size: 18px;
-}
-
-/* Errors + descriptions */
-.gform_wrapper.gravity-theme .gfsk-form .gfield_error input,
-.gform_wrapper.gravity-theme .gfsk-form .gfield_error select,
-.gform_wrapper.gravity-theme .gfsk-form .gfield_error textarea,
-.gform_wrapper .gfsk-form .gfield_error input,
-.gform_wrapper .gfsk-form .gfield_error select,
-.gform_wrapper .gfsk-form .gfield_error textarea {
-  border-color: #c62828 !important;
-  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.12);
-}
-
-.gform_wrapper.gravity-theme .gfsk-form .validation_message,
-.gform_wrapper.gravity-theme .gfsk-form .gform_validation_errors,
-.gform_wrapper .gfsk-form .validation_message,
-.gform_wrapper .gfsk-form .gform_validation_errors {
-  color: #8c1d18;
-  border-color: rgba(140, 29, 24, 0.25);
-}
-
-.gform_wrapper.gravity-theme .gfsk-form .gfield_description,
-.gform_wrapper .gfsk-form .gfield_description {
-  font-size: calc(var(--gfsk-font-size, 15px) - 2px);
-  color: #667085;
 }
 
 /* Preset: Minimal */
@@ -213,29 +99,4 @@
   color: #fff;
   padding: 8px 12px;
   border-radius: calc(var(--gfsk-radius, 10px) - 2px);
-}
-
-/* Survey Likert compatibility */
-.gform_wrapper .gfsk-form table.gsurvey-likert {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: var(--gfsk-radius, 10px);
-  overflow: hidden;
-}
-
-.gform_wrapper .gfsk-form table.gsurvey-likert th,
-.gform_wrapper .gfsk-form table.gsurvey-likert td {
-  padding: calc(var(--gfsk-padding, 16px) * 0.45);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  vertical-align: middle;
-}
-
-.gform_wrapper .gfsk-form table.gsurvey-likert tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--gfsk-card-bg, #f8fafc) 70%, #fff);
-}
-
-.gform_wrapper .gfsk-form table.gsurvey-likert td input[type="radio"] {
-  margin: 0 auto;
-  display: block;
 }

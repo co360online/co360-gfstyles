@@ -16,6 +16,9 @@ define( 'GFSK_VERSION', '1.0.0' );
 define( 'GFSK_PLUGIN_FILE', __FILE__ );
 define( 'GFSK_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GFSK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'GFSK_DEBUG' ) ) {
+	define( 'GFSK_DEBUG', false );
+}
 
 require_once GFSK_PLUGIN_DIR . 'includes/class-gfsk-presets.php';
 require_once GFSK_PLUGIN_DIR . 'includes/class-gfsk-wrappers.php';
