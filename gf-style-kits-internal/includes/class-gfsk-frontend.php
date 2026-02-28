@@ -41,7 +41,7 @@ class GFSK_Frontend {
 		wp_add_inline_style( 'gfsk-base', $inline_css );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( '[GFSK] Enqueued styles for form ' . $form_id . ' preset=' . (string) $config['preset'] . ' vars=' . wp_json_encode( $vars ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'GFSK enqueue form ' . $form_id . ' preset=' . (string) $config['preset'] . ' vars=' . wp_json_encode( $vars ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 	}
 
@@ -97,8 +97,13 @@ class GFSK_Frontend {
 			$classes[] = 'gfsk-show-section-line';
 		}
 		$class_str = implode( ' ', $classes );
+		$updated   = $this->append_classes_to_wrapper( $form_markup, $form_id, $class_str );
 
-		return $this->append_classes_to_wrapper( $form_markup, $form_id, $class_str );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && $updated !== $form_markup ) {
+			error_log( 'GFSK wrapper class injected for form ' . $form_id ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
+
+		return $updated;
 	}
 
 	/**
