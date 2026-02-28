@@ -41,7 +41,7 @@ class GFSK_Frontend {
 		wp_add_inline_style( 'gfsk-base', $inline_css );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( '[GFSK] Enqueued styles for form ' . $form_id . ' preset=' . (string) $config['preset'] ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( '[GFSK] Enqueued styles for form ' . $form_id . ' preset=' . (string) $config['preset'] . ' vars=' . wp_json_encode( $vars ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 	}
 
@@ -76,10 +76,7 @@ class GFSK_Frontend {
 			$class .= ' gfsk-show-section-line';
 		}
 
-		if ( preg_match( '/class=["\']([^"\']*)["\']/', $form_tag ) ) {
-			return preg_replace( '/class=["\']([^"\']*)["\']/', 'class="$1 ' . esc_attr( $class ) . '"', $form_tag, 1 ) ?: $form_tag;
-		}
-		return str_replace( '<form ', '<form class="' . esc_attr( $class ) . '" ', $form_tag );
+		return $this->append_classes_to_html_tag( $form_tag, $class );
 	}
 
 	public function inject_wrapper_classes( string $form_markup, array $form ): string {
@@ -101,21 +98,48 @@ class GFSK_Frontend {
 		}
 		$class_str = implode( ' ', $classes );
 
-		$pattern = '/(<div[^>]*id=["\']gform_wrapper_' . $form_id . '["\'][^>]*)(>)/i';
+		return $this->append_classes_to_wrapper( $form_markup, $form_id, $class_str );
+	}
+
+	/**
+	 * Append classes to the GF wrapper div matching id=gform_wrapper_{ID} regardless attribute order.
+	 */
+	private function append_classes_to_wrapper( string $markup, int $form_id, string $classes ): string {
+		$pattern = '/<div\b[^>]*\bid=("|\')gform_wrapper_' . $form_id . '\1[^>]*>/i';
+
 		return preg_replace_callback(
 			$pattern,
-			static function ( array $matches ) use ( $class_str ): string {
-				$tag = $matches[1];
-				if ( preg_match( '/class=["\']([^"\']*)["\']/', $tag ) ) {
-					$tag = preg_replace( '/class=["\']([^"\']*)["\']/', 'class="$1 ' . esc_attr( $class_str ) . '"', $tag, 1 ) ?: $tag;
-				} else {
-					$tag .= ' class="' . esc_attr( $class_str ) . '"';
-				}
-				return $tag . $matches[2];
+			function ( array $matches ) use ( $classes ): string {
+				return $this->append_classes_to_html_tag( $matches[0], $classes );
 			},
-			$form_markup,
+			$markup,
 			1
-		) ?: $form_markup;
+		) ?: $markup;
+	}
+
+	/**
+	 * Add classes to any single HTML opening tag by merging/creating class attribute.
+	 */
+	private function append_classes_to_html_tag( string $tag, string $classes_to_add ): string {
+		$classes_to_add = trim( $classes_to_add );
+		if ( '' === $classes_to_add ) {
+			return $tag;
+		}
+
+		$existing_classes = '';
+		if ( preg_match( '/\bclass=("|\')([^"\']*)\1/i', $tag, $matches ) ) {
+			$existing_classes = $matches[2];
+		}
+
+		$merged = array_filter( array_map( 'sanitize_html_class', preg_split( '/\s+/', trim( $existing_classes . ' ' . $classes_to_add ) ) ?: array() ) );
+		$merged = array_values( array_unique( $merged ) );
+		$value  = implode( ' ', $merged );
+
+		if ( preg_match( '/\bclass=("|\')([^"\']*)\1/i', $tag ) ) {
+			return preg_replace( '/\bclass=("|\')([^"\']*)\1/i', 'class="' . esc_attr( $value ) . '"', $tag, 1 ) ?: $tag;
+		}
+
+		return preg_replace( '/>$/', ' class="' . esc_attr( $value ) . '">', $tag, 1 ) ?: $tag;
 	}
 
 	private function scope_css( string $css, string $scope ): string {
