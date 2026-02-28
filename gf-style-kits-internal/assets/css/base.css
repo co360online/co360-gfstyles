@@ -1,36 +1,30 @@
 .gform_wrapper .gfsk-form {
-  --gfsk-primary: #2f6cdb;
-  --gfsk-secondary: #1d4ea1;
-  --gfsk-card-bg: #f8fafc;
-  --gfsk-radius: 8px;
-  --gfsk-padding: 16px;
-  --gfsk-font-size: 15px;
-  font-size: var(--gfsk-font-size);
+  font-size: var(--gfsk-font-size, 15px);
 }
 
 .gform_wrapper .gfsk-form .gform_footer input[type="submit"],
 .gform_wrapper .gfsk-form .gform_page_footer input[type="button"],
 .gform_wrapper .gfsk-form .gform_page_footer button {
-  background: var(--gfsk-primary);
+  background: var(--gfsk-primary, #2f6cdb);
   color: #fff;
-  border: 1px solid var(--gfsk-primary);
-  border-radius: var(--gfsk-radius);
-  padding: calc(var(--gfsk-padding) * 0.5) var(--gfsk-padding);
+  border: 1px solid var(--gfsk-primary, #2f6cdb);
+  border-radius: var(--gfsk-radius, 8px);
+  padding: calc(var(--gfsk-padding, 16px) * 0.5) var(--gfsk-padding, 16px);
   transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
 }
 
 .gform_wrapper .gfsk-form .gform_footer input[type="submit"]:hover,
 .gform_wrapper .gfsk-form .gform_page_footer input[type="button"]:hover,
 .gform_wrapper .gfsk-form .gform_page_footer button:hover {
-  background: var(--gfsk-secondary);
-  border-color: var(--gfsk-secondary);
+  background: var(--gfsk-secondary, #1d4ea1);
+  border-color: var(--gfsk-secondary, #1d4ea1);
 }
 
 .gform_wrapper .gfsk-form .gform_footer input[type="submit"]:focus-visible,
 .gform_wrapper .gfsk-form .gform_page_footer input[type="button"]:focus-visible,
 .gform_wrapper .gfsk-form .gform_page_footer button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gfsk-primary) 35%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 35%, transparent);
 }
 
 .gform_wrapper .gfsk-form .gform_footer input[type="submit"][disabled],
@@ -40,22 +34,22 @@
 }
 
 .gform_wrapper .gfsk-form .gsection {
-  background: var(--gfsk-card-bg);
-  border-radius: var(--gfsk-radius);
-  padding: var(--gfsk-padding);
-  margin-top: calc(var(--gfsk-padding) * 1.2);
-  margin-bottom: calc(var(--gfsk-padding) * 0.8);
+  background: var(--gfsk-card-bg, #f8fafc);
+  border-radius: var(--gfsk-radius, 8px);
+  padding: var(--gfsk-padding, 16px);
+  margin-top: calc(var(--gfsk-padding, 16px) * 1.2);
+  margin-bottom: calc(var(--gfsk-padding, 16px) * 0.8);
 }
 
 .gform_wrapper .gfsk-form .gsection .gsection_title {
   margin: 0;
-  color: var(--gfsk-primary);
+  color: var(--gfsk-primary, #2f6cdb);
 }
 
 .gform_wrapper .gfsk-form.gfsk-section-title-light .gsection .gsection_title {
   color: #fff;
-  background: var(--gfsk-primary);
-  border-radius: calc(var(--gfsk-radius) - 2px);
+  background: var(--gfsk-primary, #2f6cdb);
+  border-radius: calc(var(--gfsk-radius, 8px) - 2px);
   padding: 8px 12px;
 }
 
@@ -64,7 +58,7 @@
   display: block;
   height: 2px;
   margin-top: 10px;
-  background: color-mix(in srgb, var(--gfsk-primary) 45%, #ffffff);
+  background: color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 45%, #ffffff);
 }
 
 .gform_wrapper .gfsk-form input[type="checkbox"],
@@ -73,7 +67,7 @@
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid var(--gfsk-primary);
+  border: 2px solid var(--gfsk-primary, #2f6cdb);
   background: #fff;
   margin-right: 8px;
   transform: translateY(2px);
@@ -97,7 +91,7 @@
   height: 8px;
   margin: 3px;
   border-radius: inherit;
-  background: var(--gfsk-secondary);
+  background: var(--gfsk-secondary, #1d4ea1);
   transform: scale(0);
   transition: transform .12s ease-in-out;
 }
@@ -110,7 +104,7 @@
 .gform_wrapper .gfsk-form input[type="checkbox"]:focus-visible,
 .gform_wrapper .gfsk-form input[type="radio"]:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gfsk-primary) 25%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 25%, transparent);
 }
 
 .gform_wrapper .gfsk-form .gfield_error input,
@@ -127,7 +121,7 @@
 }
 
 .gform_wrapper .gfsk-form .gfield_description {
-  font-size: calc(var(--gfsk-font-size) - 2px);
+  font-size: calc(var(--gfsk-font-size, 15px) - 2px);
   color: #667085;
 }
 
@@ -135,16 +129,16 @@
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  background: var(--gfsk-card-bg);
-  border: 1px solid color-mix(in srgb, var(--gfsk-primary) 25%, #ffffff);
-  border-radius: var(--gfsk-radius);
-  padding: var(--gfsk-padding);
+  background: var(--gfsk-card-bg, #f8fafc);
+  border: 1px solid color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 25%, #ffffff);
+  border-radius: var(--gfsk-radius, 8px);
+  padding: var(--gfsk-padding, 16px);
 }
 
 .gform_wrapper .gfsk-form.gfsk-preset-factura [id$="_33"] {
   grid-column: 1 / -1;
   padding: 10px;
-  border-radius: calc(var(--gfsk-radius) - 2px);
-  background: color-mix(in srgb, var(--gfsk-primary) 12%, #ffffff);
+  border-radius: calc(var(--gfsk-radius, 8px) - 2px);
+  background: color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 12%, #ffffff);
   font-weight: 700;
 }
