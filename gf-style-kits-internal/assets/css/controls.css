@@ -1,10 +1,16 @@
 /* Modern controls + spacing + labels + submit + likert */
 
-.gform_wrapper .gfsk-form label,
-.gform_wrapper .gfsk-form legend,
-.gform_wrapper .gfsk-form .gfield_label {
+.gform_wrapper .gfsk-form .gfield > .gfield_label,
+.gform_wrapper .gfsk-form .gfield > legend.gfield_label,
+.gform_wrapper .gfsk-form .gfield > .gform-field-label.gfield_label_before_complex {
   font-size: var(--gfsk-label-size, 18px);
   font-weight: var(--gfsk-label-weight, 700);
+}
+
+.gform_wrapper .gfsk-form .gchoice label,
+.gform_wrapper .gfsk-form .gform-field-label--type-inline {
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .gform_wrapper.gravity-theme .gfsk-form input[type="text"],

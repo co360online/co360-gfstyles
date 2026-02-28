@@ -47,7 +47,7 @@ class GFSK_Frontend {
 	}
 
 	private function build_css_variables( int $form_id, array $vars ): string {
-		$scope = '#gform_wrapper_' . $form_id;
+		$scope = '#gform_wrapper_' . $form_id . ' .gfsk-form';
 		$css   = $scope . '{';
 		$css  .= '--gfsk-primary:' . esc_attr( (string) $vars['primary'] ) . ';';
 		$css  .= '--gfsk-secondary:' . esc_attr( (string) $vars['secondary'] ) . ';';
@@ -123,6 +123,7 @@ class GFSK_Frontend {
 		}
 		$class_str = implode( ' ', $classes );
 		$updated   = $this->append_classes_to_wrapper( $form_markup, $form_id, $class_str );
+		$updated   = $this->append_data_attrs_to_wrapper( $updated, $form_id, array( 'data-gfsk' => 'on', 'data-gfsk-form' => (string) $form_id ) );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && $updated !== $form_markup ) {
 			error_log( 'GFSK wrapper class injected for form ' . $form_id ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -172,6 +173,23 @@ class GFSK_Frontend {
 		return preg_replace( '/>$/', ' class="' . esc_attr( $value ) . '">', $tag, 1 ) ?: $tag;
 	}
 
+
+
+	/**
+	 * Add/replace data-* attributes on GF wrapper div by form ID.
+	 */
+	private function append_data_attrs_to_wrapper( string $markup, int $form_id, array $attrs ): string {
+		$pattern = '/<div\b[^>]*\bid=("|\')gform_wrapper_' . $form_id . '\1[^>]*>/i';
+
+		return preg_replace_callback(
+			$pattern,
+			function ( array $matches ) use ( $attrs ): string {
+				return $this->append_data_attrs_to_html_tag( $matches[0], $attrs );
+			},
+			$markup,
+			1
+		) ?: $markup;
+	}
 
 	/**
 	 * Add or replace arbitrary data-* attributes in opening HTML tag.
