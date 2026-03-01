@@ -17,8 +17,16 @@ class GFSK_Frontend {
 	private array $active_forms = array();
 
 	public function register(): void {
+		// Frontend-only registration/enqueue. Required by spec.
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_assets' ) );
-		add_action( 'gform_pre_render', array( $this, 'track_active_form' ), 5 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_fallback' ), 20 );
+
+		// Track active forms across render/validation lifecycle.
+		add_filter( 'gform_pre_render', array( $this, 'track_active_form' ), 5 );
+		add_filter( 'gform_pre_validation', array( $this, 'track_active_form' ), 5 );
+		add_filter( 'gform_pre_submission_filter', array( $this, 'track_active_form' ), 5 );
+		add_filter( 'gform_admin_pre_render', array( $this, 'track_active_form' ), 5 );
+
 		add_action( 'gform_enqueue_scripts', array( $this, 'enqueue_for_form' ), 10, 2 );
 		add_filter( 'gform_get_form_filter', array( $this, 'inject_wrapper_classes' ), 10, 2 );
 		add_filter( 'gform_form_tag', array( $this, 'inject_form_tag_data' ), 10, 2 );
@@ -26,8 +34,20 @@ class GFSK_Frontend {
 
 	public function register_assets(): void {
 		wp_register_style( 'gfsk-base', GFSK_PLUGIN_URL . 'assets/css/base.css', array(), GFSK_VERSION );
-		wp_register_style( 'gfsk-controls', GFSK_PLUGIN_URL . 'assets/css/controls.css', array( 'gfsk-base' ), GFSK_VERSION );
-		wp_register_script( 'gfsk-frontend', GFSK_PLUGIN_URL . 'assets/js/frontend.js', array( 'jquery' ), GFSK_VERSION, true );
+		// Stable handle requested for inline vars.
+		wp_register_style( 'gfsk-frontend', GFSK_PLUGIN_URL . 'assets/css/controls.css', array( 'gfsk-base' ), GFSK_VERSION );
+		wp_register_script( 'gfsk-frontend-js', GFSK_PLUGIN_URL . 'assets/js/frontend.js', array( 'jquery' ), GFSK_VERSION, true );
+	}
+
+	/**
+	 * Fallback: if global detection is not reliable at this point, enqueue styles in frontend.
+	 * TODO: optimize with smarter page-level form detection cache.
+	 */
+	public function maybe_enqueue_fallback(): void {
+		if ( is_admin() ) {
+			return;
+		}
+		wp_enqueue_style( 'gfsk-frontend' );
 	}
 
 	public function track_active_form( array $form ): array {
@@ -60,9 +80,9 @@ class GFSK_Frontend {
 
 		$this->active_forms[ $form_id ] = $form_id;
 
-		wp_enqueue_style( 'gfsk-base' );
-		wp_enqueue_style( 'gfsk-controls' );
-		wp_enqueue_script( 'gfsk-frontend' );
+		wp_enqueue_style( 'gfsk-frontend' );
+		// Only needed where active kit renders (AJAX re-render helper).
+		wp_enqueue_script( 'gfsk-frontend-js' );
 
 		$vars       = (array) $config['vars'];
 		$inline_css = $this->build_css_variables( $form_id, $vars );
@@ -71,10 +91,10 @@ class GFSK_Frontend {
 			$inline_css .= "\n" . $this->scope_css( $advanced, '#gform_wrapper_' . $form_id );
 		}
 
-		wp_add_inline_style( 'gfsk-controls', $inline_css );
+		wp_add_inline_style( 'gfsk-frontend', $inline_css );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'GFSK enqueue form ' . $form_id . ' preset=' . (string) $config['preset'] ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'GFSK enqueue form ' . $form_id . ' active=1 css_handle=gfsk-frontend inline=1' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 	}
 
@@ -100,6 +120,7 @@ class GFSK_Frontend {
 		$css  .= '--gfsk-btn-text:' . esc_attr( (string) $vars['button_text'] ) . ';';
 		$css  .= '--gfsk-btn-bg-hover:' . esc_attr( (string) $vars['button_bg_hover'] ) . ';';
 		$css  .= '}';
+
 		return $css;
 	}
 
@@ -152,6 +173,10 @@ class GFSK_Frontend {
 				'data-gfsk-form' => (string) $form_id,
 			)
 		);
+
+		if ( $this->is_debug_enabled() ) {
+			$updated = "<!-- GFSK: form={$form_id} active=1 css_handle=gfsk-frontend inline=1 -->\n" . $updated;
+		}
 
 		return $updated;
 	}
@@ -211,12 +236,14 @@ class GFSK_Frontend {
 			if ( '' === $attr ) {
 				continue;
 			}
+
 			if ( preg_match( '/\b' . preg_quote( $attr, '/' ) . '=("|\')([^"\']*)\1/i', $tag ) ) {
 				$tag = preg_replace( '/\b' . preg_quote( $attr, '/' ) . '=("|\')([^"\']*)\1/i', $attr . '="' . $value . '"', $tag, 1 ) ?: $tag;
 			} else {
 				$tag = preg_replace( '/>$/', ' ' . $attr . '="' . $value . '">', $tag, 1 ) ?: $tag;
 			}
 		}
+
 		return $tag;
 	}
 
@@ -224,6 +251,7 @@ class GFSK_Frontend {
 		if ( false !== strpos( $css, $scope ) ) {
 			return $css;
 		}
+
 		$callback = static function ( array $matches ) use ( $scope ): string {
 			$selectors = explode( ',', trim( $matches[2] ) );
 			$prefixed  = array();
@@ -233,8 +261,19 @@ class GFSK_Frontend {
 					$prefixed[] = $scope . ' ' . $selector;
 				}
 			}
+
 			return implode( ', ', $prefixed ) . ' {';
 		};
+
 		return preg_replace_callback( '/(^|})\s*([^@}{][^{]+)\s*\{/m', $callback, $css ) ?? '';
+	}
+
+	private function is_debug_enabled(): bool {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return true;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return isset( $_GET['gfsk_debug'] ) && '1' === (string) $_GET['gfsk_debug'];
 	}
 }
