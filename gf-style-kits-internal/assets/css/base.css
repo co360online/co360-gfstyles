@@ -1,0 +1,102 @@
+/* Base presets/cards/layout styling for GF Style Kits */
+
+.gform_wrapper.gravity-theme.gfsk-form,
+.gform_wrapper.gfsk-form {
+  font-size: var(--gfsk-font-size, 15px);
+  line-height: 1.45;
+}
+
+.gform_wrapper.gravity-theme.gfsk-form .gsection,
+.gform_wrapper.gfsk-form .gsection {
+  background: var(--gfsk-card-bg, #f8fafc);
+  border-radius: var(--gfsk-radius, 10px);
+  padding: var(--gfsk-padding, 16px);
+  margin: 14px 0;
+}
+
+.gform_wrapper.gravity-theme.gfsk-form .gsection .gsection_title,
+.gform_wrapper.gfsk-form .gsection .gsection_title {
+  margin: 0;
+  color: var(--gfsk-primary, #2f6cdb);
+}
+
+.gform_wrapper.gravity-theme.gfsk-form.gfsk-section-title-light .gsection .gsection_title,
+.gform_wrapper.gfsk-form.gfsk-section-title-light .gsection .gsection_title {
+  color: #fff;
+  background: var(--gfsk-primary, #2f6cdb);
+  border-radius: calc(var(--gfsk-radius, 10px) - 2px);
+  padding: 8px 12px;
+}
+
+.gform_wrapper.gravity-theme.gfsk-form.gfsk-show-section-line .gsection::after,
+.gform_wrapper.gfsk-form.gfsk-show-section-line .gsection::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 10px;
+  background: color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 45%, #fff);
+}
+
+/* Preset: Minimal */
+.gform_wrapper.gfsk-form.gfsk-preset-minimal .gform-body {
+  background: transparent;
+  padding: 0;
+}
+
+/* Preset: Card */
+.gform_wrapper.gfsk-form.gfsk-preset-card .gform-body {
+  background: var(--gfsk-card-bg, #f6f8f7);
+  padding: var(--gfsk-padding, 16px);
+  border-radius: var(--gfsk-radius, 16px);
+}
+
+.gform_wrapper.gfsk-form.gfsk-preset-card .gfield {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--gfsk-radius, 16px);
+  padding: calc(var(--gfsk-padding, 16px) * 0.75);
+  margin-bottom: 14px;
+}
+
+/* Preset: Factura */
+.gform_wrapper.gfsk-form.gfsk-preset-factura .gform-body {
+  border: 1px solid color-mix(in srgb, var(--gfsk-secondary, #1d4ea1) 35%, #ddd);
+  border-radius: var(--gfsk-radius, 12px);
+  padding: var(--gfsk-padding, 16px);
+  background: #fff;
+}
+
+.gform_wrapper.gfsk-form.gfsk-preset-factura .gfield_label {
+  font-weight: 700;
+  color: var(--gfsk-secondary, #1d4ea1);
+}
+
+.gform_wrapper.gfsk-form.gfsk-preset-factura .bloque-resumen-pago {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: var(--gfsk-card-bg, #f8fafc);
+  border: 1px solid color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 25%, #fff);
+  border-radius: var(--gfsk-radius, 10px);
+  padding: var(--gfsk-padding, 16px);
+}
+
+.gform_wrapper.gfsk-form.gfsk-preset-factura [id$="_33"] {
+  grid-column: 1 / -1;
+  padding: 10px;
+  border-radius: calc(var(--gfsk-radius, 10px) - 2px);
+  background: color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 12%, #fff);
+  font-weight: 700;
+}
+
+/* Preset: Corporate */
+.gform_wrapper.gfsk-form.gfsk-preset-corporate .gsection {
+  border: 1px solid color-mix(in srgb, var(--gfsk-secondary, #1d4ea1) 30%, #ddd);
+}
+
+.gform_wrapper.gfsk-form.gfsk-preset-corporate .gsection .gsection_title {
+  background: var(--gfsk-secondary, #1d4ea1);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: calc(var(--gfsk-radius, 10px) - 2px);
+}
