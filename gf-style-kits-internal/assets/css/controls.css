@@ -1,45 +1,37 @@
 /* Modern controls + spacing + labels + submit + likert */
 
-.gform_wrapper .gfsk-form .gfield > .gfield_label,
-.gform_wrapper .gfsk-form .gfield > legend.gfield_label,
-.gform_wrapper .gfsk-form .gfield > .gform-field-label.gfield_label_before_complex {
+.gform_wrapper.gfsk-form .gfield > .gfield_label,
+.gform_wrapper.gfsk-form .gfield > legend.gfield_label,
+.gform_wrapper.gfsk-form .gfield > .gform-field-label.gfield_label_before_complex {
   font-size: var(--gfsk-label-size, 18px);
   font-weight: var(--gfsk-label-weight, 700);
 }
 
-.gform_wrapper .gfsk-form .gchoice label,
-.gform_wrapper .gfsk-form .gform-field-label--type-inline {
+.gform_wrapper.gfsk-form .gchoice label,
+.gform_wrapper.gfsk-form .gform-field-label--type-inline {
   font-size: inherit;
   font-weight: inherit;
 }
 
-.gform_wrapper.gravity-theme .gfsk-form input[type="text"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="email"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="tel"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="number"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="password"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="url"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="search"],
-.gform_wrapper.gravity-theme .gfsk-form input[type="date"],
-.gform_wrapper.gravity-theme .gfsk-form select,
-.gform_wrapper.gravity-theme .gfsk-form textarea,
-.gform_wrapper .gfsk-form input[type="text"],
-.gform_wrapper .gfsk-form input[type="email"],
-.gform_wrapper .gfsk-form input[type="tel"],
-.gform_wrapper .gfsk-form input[type="number"],
-.gform_wrapper .gfsk-form input[type="password"],
-.gform_wrapper .gfsk-form input[type="url"],
-.gform_wrapper .gfsk-form input[type="search"],
-.gform_wrapper .gfsk-form input[type="date"],
-.gform_wrapper .gfsk-form select,
-.gform_wrapper .gfsk-form textarea {
+.gform_wrapper.gfsk-form input[type="text"],
+.gform_wrapper.gfsk-form input[type="email"],
+.gform_wrapper.gfsk-form input[type="tel"],
+.gform_wrapper.gfsk-form input[type="number"],
+.gform_wrapper.gfsk-form input[type="password"],
+.gform_wrapper.gfsk-form input[type="url"],
+.gform_wrapper.gfsk-form input[type="search"],
+.gform_wrapper.gfsk-form input[type="date"],
+.gform_wrapper.gfsk-form select,
+.gform_wrapper.gfsk-form textarea {
   border-radius: var(--gfsk-radius, 10px);
   padding: calc(var(--gfsk-padding, 16px) * 0.6) calc(var(--gfsk-padding, 16px) * 0.8);
 }
 
-.gform_wrapper .gfsk-form .gform_footer input[type="submit"],
-.gform_wrapper .gfsk-form .gform_page_footer input[type="button"],
-.gform_wrapper .gfsk-form .gform_page_footer button {
+.gform_wrapper.gfsk-form .gform_footer input[type="submit"],
+.gform_wrapper.gfsk-form .gform_page_footer input[type="submit"],
+.gform_wrapper.gfsk-form input.gform_button,
+.gform_wrapper.gfsk-form button.gform_button,
+.gform_wrapper.gfsk-form .gform_button.button {
   background: var(--gfsk-btn-bg, var(--gfsk-primary, #2f6cdb));
   color: var(--gfsk-btn-text, #fff);
   border: 1px solid var(--gfsk-btn-bg, var(--gfsk-primary, #2f6cdb));
@@ -48,28 +40,30 @@
   padding: var(--gfsk-btn-py, 14px) var(--gfsk-btn-px, 22px);
 }
 
-.gform_wrapper .gfsk-form .gform_footer input[type="submit"]:hover,
-.gform_wrapper .gfsk-form .gform_page_footer input[type="button"]:hover,
-.gform_wrapper .gfsk-form .gform_page_footer button:hover {
+.gform_wrapper.gfsk-form .gform_footer input[type="submit"]:hover,
+.gform_wrapper.gfsk-form .gform_page_footer input[type="submit"]:hover,
+.gform_wrapper.gfsk-form input.gform_button:hover,
+.gform_wrapper.gfsk-form button.gform_button:hover,
+.gform_wrapper.gfsk-form .gform_button.button:hover {
   background: var(--gfsk-btn-bg-hover, var(--gfsk-secondary, #1d4ea1));
   border-color: var(--gfsk-btn-bg-hover, var(--gfsk-secondary, #1d4ea1));
 }
 
-.gform_wrapper .gfsk-form :is(input,select,textarea,button):focus-visible {
+.gform_wrapper.gfsk-form :is(input,select,textarea,button):focus-visible {
   outline: 2px solid color-mix(in srgb, var(--gfsk-primary, #2f6cdb) 55%, transparent);
   outline-offset: 1px;
 }
 
-.gform_wrapper .gfsk-form .gfield_checkbox .gchoice,
-.gform_wrapper .gfsk-form .gfield_radio .gchoice {
-  margin: var(--gfsk-choice-row-gap, 6px) 0;
+.gform_wrapper.gfsk-form .gfield_checkbox .gchoice,
+.gform_wrapper.gfsk-form .gfield_radio .gchoice {
+  margin-block: var(--gfsk-choice-row-gap, 6px);
   display: flex;
   align-items: center;
   gap: var(--gfsk-choice-gap, 10px);
 }
 
-.gform_wrapper .gfsk-form input[type="checkbox"],
-.gform_wrapper .gfsk-form input[type="radio"] {
+.gform_wrapper.gfsk-form input[type="checkbox"],
+.gform_wrapper.gfsk-form input[type="radio"] {
   appearance: none;
   -webkit-appearance: none;
   width: var(--gfsk-choice-size, 22px);
@@ -82,12 +76,12 @@
   margin: 0;
 }
 
-.gform_wrapper .gfsk-form input[type="radio"] {
+.gform_wrapper.gfsk-form input[type="radio"] {
   border-radius: 50%;
 }
 
-.gform_wrapper .gfsk-form input[type="checkbox"]::before,
-.gform_wrapper .gfsk-form input[type="radio"]::before {
+.gform_wrapper.gfsk-form input[type="checkbox"]::before,
+.gform_wrapper.gfsk-form input[type="radio"]::before {
   content: "";
   width: calc(var(--gfsk-choice-size, 22px) * 0.5);
   height: calc(var(--gfsk-choice-size, 22px) * 0.5);
@@ -97,12 +91,12 @@
   border-radius: inherit;
 }
 
-.gform_wrapper .gfsk-form input[type="checkbox"]:checked::before,
-.gform_wrapper .gfsk-form input[type="radio"]:checked::before {
+.gform_wrapper.gfsk-form input[type="checkbox"]:checked::before,
+.gform_wrapper.gfsk-form input[type="radio"]:checked::before {
   transform: scale(1);
 }
 
-.gform_wrapper .gfsk-form table.gsurvey-likert {
+.gform_wrapper.gfsk-form table.gsurvey-likert {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid rgba(0, 0, 0, .12);
@@ -110,18 +104,18 @@
   overflow: hidden;
 }
 
-.gform_wrapper .gfsk-form table.gsurvey-likert th,
-.gform_wrapper .gfsk-form table.gsurvey-likert td {
+.gform_wrapper.gfsk-form table.gsurvey-likert th,
+.gform_wrapper.gfsk-form table.gsurvey-likert td {
   padding: calc(var(--gfsk-padding, 16px) * 0.45);
   border-bottom: 1px solid rgba(0, 0, 0, .08);
   vertical-align: middle;
 }
 
-.gform_wrapper .gfsk-form table.gsurvey-likert tbody tr:nth-child(even) {
+.gform_wrapper.gfsk-form table.gsurvey-likert tbody tr:nth-child(even) {
   background: color-mix(in srgb, var(--gfsk-card-bg, #f8fafc) 70%, #fff);
 }
 
-.gform_wrapper .gfsk-form .gsurvey-likert input[type="radio"] {
+.gform_wrapper.gfsk-form .gsurvey-likert input[type="radio"] {
   width: var(--gfsk-choice-size, 22px);
   height: var(--gfsk-choice-size, 22px);
   border-radius: 50%;
@@ -131,6 +125,6 @@
   display: block;
 }
 
-.gform_wrapper .gfsk-form .gsurvey-likert input[type="radio"]:checked {
+.gform_wrapper.gfsk-form .gsurvey-likert input[type="radio"]:checked {
   box-shadow: inset 0 0 0 6px var(--gfsk-primary, #2f6cdb);
 }
